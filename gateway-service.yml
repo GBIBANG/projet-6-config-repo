@@ -1,0 +1,27 @@
+server:
+  port: 8888
+
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: customer-service
+          uri: lb://customer-service
+          predicates:
+            - Path=/customer-api/**
+        - id: account-service
+          uri: lb://account-service
+          predicates:
+            - Path=/bank-account-api/**
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${DISCOVERY_URI}
+  instance:
+    prefer-ip-address: true
